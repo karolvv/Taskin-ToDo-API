@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskin.Models;
+using Taskin.Services;
 
 namespace Taskin.Controllers
 {
@@ -12,10 +13,17 @@ namespace Taskin.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
+        private readonly ITodoServices _services;
+
         [HttpPost]
-        public ActionResult<TodoTasks> AddTodoTasks()
+        public ActionResult<TodoTasks> AddTodoTasks(TodoTasks tasks)
         {
-            return Ok();
+            var todoTasks = _services.AddTodoTasks(tasks);
+            if (todoTasks == null)
+            {
+                return NotFound();
+            }
+            return todoTasks();
         }
     }
 }
