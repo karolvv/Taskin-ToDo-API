@@ -37,9 +37,13 @@ namespace Taskin
             }
             else
             {
+                // HSTS: Turned by default even in dev mode - gives us HTTPS redirect middleware and HTTP Strict Transport Security (HSTS)
+                // This forces the browser to be only accessible via HTTPS. This is only used in Prod as the server tells the browser to enforce
+                // HTTPS and that no requests should be coming through as HTTP.
                 app.UseHsts();
             }
 
+            // This handles bouncing HTTP requests to the HTTPS endpoint - intelligent (knows what ports are being listened on)
             app.UseHttpsRedirection();
             app.UseMvc();
         }
