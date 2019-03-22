@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Taskin.Models;
 
 namespace Taskin.Services
 {
     public interface ITodoServices
     {
-        TodoServices AddTodoTasks(TodoTasks tasks);
+        TodoTasks AddTodoTasks(TodoTasks tasks);
+        Dictionary<string, TodoTasks> GetTodoItems();
     }
 }

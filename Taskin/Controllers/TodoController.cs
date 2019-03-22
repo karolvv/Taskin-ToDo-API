@@ -15,7 +15,17 @@ namespace Taskin.Controllers
     {
         private readonly ITodoServices _services;
 
+        public TodoController(ITodoServices services)
+        {
+            _services = services;
+        }
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            return new string[] { "task1", "task2" };
+        }
+
         [HttpPost]
+        [Route("AddTodoTasks")]
         public ActionResult<TodoTasks> AddTodoTasks(TodoTasks tasks)
         {
             var todoTasks = _services.AddTodoTasks(tasks);
@@ -23,7 +33,20 @@ namespace Taskin.Controllers
             {
                 return NotFound();
             }
-            return todoTasks();
+            return todoTasks;
+        }
+
+        [HttpGet]
+        [Route("GetTodoTasks")]
+        public ActionResult<Dictionary<string, TodoTasks>> GetTodoTasks() // We might want to create a new model that captures this to make it tidier, neater, and easier to read.
+        {
+            var todoTasks = _services.GetTodoItems();
+
+            if (todoTasks.Count == 0)
+            {
+                return NotFound();
+            }
+            return todoTasks;
         }
     }
 }
