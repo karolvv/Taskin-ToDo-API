@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using Taskin.Models;
+using Taskin.Services;
 
-namespace Taskin.Services
+namespace Taskin.Services 
 {
-    public class TodoServices : ITodoServices
+    public class TaskListServices : ITaskListServices
     {
-        private readonly Dictionary<string, TodoTasks> _todoTasks;
+        private readonly Dictionary<string, Task> _tasks;
 
-        public TodoServices()
+        public TaskListServices()
         {
-            _todoTasks = new Dictionary<string, TodoTasks>();
+            _tasks = new Dictionary<string, Task>();
         }
 
-        public TodoTasks AddTodoTasks(TodoTasks tasks)
+        public Task AddTask(Task tasks)
         {
-
-            _todoTasks.Add(generateID(), tasks);
+            _tasks.Add(generateID(), tasks);
 
             // We are returning tasks from the parameter passed in,
             // which is not exactly good practice but this will do for now
@@ -25,9 +25,9 @@ namespace Taskin.Services
             return tasks;
         }
 
-        public Dictionary<string, TodoTasks> GetTodoItems()
+        public Dictionary<string, Task> GetTasks()
         {
-            return _todoTasks;
+            return _tasks;
         }
 
         private string generateID()
