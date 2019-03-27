@@ -19,6 +19,8 @@ namespace Taskin.Controllers
         {
             _services = services;
         }
+
+        [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "task1", "task2" };
