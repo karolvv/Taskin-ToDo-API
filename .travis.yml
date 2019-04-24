@@ -1,0 +1,9 @@
+language: csharp
+dotnet: 2.2.101
+dist: xenial
+mono: none
+before_install:
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+install:
+  - dotnet build ./Taskin/Taskin.csproj
