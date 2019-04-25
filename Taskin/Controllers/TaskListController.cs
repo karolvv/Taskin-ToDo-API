@@ -6,7 +6,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskin.Services;
 
-using Task = Taskin.Models.Task;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.Runtime;
+
+using TaskModel = Taskin.Models.Task;
+
 
 namespace Taskin.Controllers
 {
@@ -15,10 +23,13 @@ namespace Taskin.Controllers
     public class TaskListController : ControllerBase
     {
         private readonly ITaskListServices _services;
+        private readonly DynamoDBContext _context;
 
         public TaskListController(ITaskListServices services)
         {
             _services = services;
+            var dynamoClient = new AmazonDynamoDBClient(RegionEndpoint.APSoutheast2);
+            _context = new DynamoDBContext(dynamoClient);
         }
 
         // GET /api/TaskList/
@@ -31,20 +42,16 @@ namespace Taskin.Controllers
         // POST /api/TaskList/AddTask
         [HttpPost]
         [Route("AddTask")]
-        public ActionResult<Task> AddTask(Models.Task task)
+        public async Task<ActionResult<TaskModel>> AddTask(TaskModel task)
         {
-            var newTask = _services.AddTask(task);
-            if (newTask == null)
-            {
-                return NotFound();
-            }
-            return newTask;
+            await _context.SaveAsync<TaskModel>(task);
+            return task;
         }
 
         // POST /api/TaskList/AddTasks
         [HttpPost]
         [Route("AddTasks")]
-        public ActionResult<Task> AddTasks(Models.Task task)
+        public ActionResult<TaskModel> AddTasks(Models.Task task)
         {
             var newTask = _services.AddTask(task);
             if (newTask == null)
@@ -57,7 +64,7 @@ namespace Taskin.Controllers
         // GET /api/TaskList/GetTasks
         [HttpGet]
         [Route("GetTasks")]
-        public ActionResult<Dictionary<string, Task>> GetTasks() // We might want to create a new model that captures this to make it tidier, neater, and easier to read.
+        public ActionResult<Dictionary<string, TaskModel>> GetTasks() // We might want to create a new model that captures this to make it tidier, neater, and easier to read.
         {
             var tasks = _services.GetTasks();
 
