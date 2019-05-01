@@ -7,3 +7,6 @@ before_install:
   - export PATH=$PATH:$HOME/.local/bin
 install:
   - dotnet build ./Taskin/Taskin.csproj
+deploy:
+  - provider: script
+    script: bash scripts/deploy.sh

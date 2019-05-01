@@ -12,7 +12,7 @@ using Amazon.Runtime;
 using Microsoft.AspNetCore.Mvc;
 using TaskModel = Taskin.Models.Task;
 
-namespace Taskin.Services 
+namespace Taskin.Services
 {
     public class TaskListServices : ITaskListServices
     {
