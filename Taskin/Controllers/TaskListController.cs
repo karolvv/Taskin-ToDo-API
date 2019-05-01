@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskin.Services;
-
-using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using Amazon.Runtime;
-
-using TaskModel = Taskin.Models.Task;
-
+using Taskin.Models;
 
 namespace Taskin.Controllers
 {
@@ -48,7 +37,7 @@ namespace Taskin.Controllers
         // POST /api/TaskList/AddTasks
         [HttpPost]
         [Route("AddTasks")]
-        public Task<TaskModel> AddTasks(Models.Task task)
+        public Task<TaskModel> AddTasks(TaskModel task)
         {
             Task<TaskModel> newTask = _services.AddTask(task);
             return newTask;

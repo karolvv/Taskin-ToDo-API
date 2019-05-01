@@ -14,41 +14,33 @@
 *******************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml;
 
 namespace Taskin.Models
 {
     [DynamoDBTable("Tasks")]
-    public class Task
+    public class TaskModel
     {
         [DynamoDBHashKey]
         [Required]
-        public string Id { get; set; }
+        private string Id { get; set; }
+
+        [Required] 
+        private DateTime Created { get; set; }
 
         [Required]
-        public DateTime Created { get; set; }
+        private DateTime Updated { get; set; }
 
         [Required]
-        public DateTime Updated { get; set; }
-
-        [Required]
-        public string Name { get; set; }
+        private string Name { get; set; }
 
         [Range(1,3)]
-        public int Priority {get; set; }
+        private int Priority {get; set; }
 
         public override string ToString()
         {
-            return string.Format(@"Id: {0} Name: {1} Priority: {2} Created: {3} Updated: {4}",
-                Id, Name, Priority, Created, Updated);
+            return $@"Id: {Id} Name: {Name} Priority: {Priority} Created: {Created} Updated: {Updated}";
         }
     }
 }
