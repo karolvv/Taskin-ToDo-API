@@ -1,33 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using Taskin.Models;
+using System.Threading.Tasks;
 using Taskin.Services;
+
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.Runtime;
+using Microsoft.AspNetCore.Mvc;
+using TaskModel = Taskin.Models.Task;
 
 namespace Taskin.Services 
 {
     public class TaskListServices : ITaskListServices
     {
-        private readonly Dictionary<string, Task> _tasks;
+        private readonly DynamoDBContext _context;
 
         public TaskListServices()
         {
-            _tasks = new Dictionary<string, Task>();
+            var dynamoClient = new AmazonDynamoDBClient(RegionEndpoint.APSoutheast2);
+            _context = new DynamoDBContext(dynamoClient);
         }
 
-        public Task AddTask(Task tasks)
+        public async Task<TaskModel> AddTask(TaskModel task)
         {
-            _tasks.Add(generateID(), tasks);
-
-            // We are returning tasks from the parameter passed in,
-            // which is not exactly good practice but this will do for now
-            // as what we want is to capture what we are doing in the line 
-            // `_todoTasks.Add(tasks.TaskName, tasks);` and returning that
-            return tasks;
+            await _context.SaveAsync<TaskModel>(task);
+            return task;
         }
 
-        public Dictionary<string, Task> GetTasks()
+        public async Task<List<TaskModel>> GetTasks()
         {
-            return _tasks;
+            var conditions = new List<ScanCondition>();
+            return await _context.ScanAsync<TaskModel>(conditions).GetRemainingAsync();
         }
 
         private string generateID()

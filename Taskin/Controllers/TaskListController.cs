@@ -28,8 +28,6 @@ namespace Taskin.Controllers
         public TaskListController(ITaskListServices services)
         {
             _services = services;
-            var dynamoClient = new AmazonDynamoDBClient(RegionEndpoint.APSoutheast2);
-            _context = new DynamoDBContext(dynamoClient);
         }
 
         // GET /api/TaskList/
@@ -44,34 +42,26 @@ namespace Taskin.Controllers
         [Route("AddTask")]
         public async Task<ActionResult<TaskModel>> AddTask(TaskModel task)
         {
-            await _context.SaveAsync<TaskModel>(task);
+            await _services.AddTask(task);
             return task;
         }
 
         // POST /api/TaskList/AddTasks
         [HttpPost]
         [Route("AddTasks")]
-        public ActionResult<TaskModel> AddTasks(Models.Task task)
+        public Task<TaskModel> AddTasks(Models.Task task)
         {
-            var newTask = _services.AddTask(task);
-            if (newTask == null)
-            {
-                return NotFound();
-            }
+            Task<TaskModel> newTask = _services.AddTask(task);
             return newTask;
         }
 
         // GET /api/TaskList/GetTasks
         [HttpGet]
         [Route("GetTasks")]
-        public ActionResult<Dictionary<string, TaskModel>> GetTasks() // We might want to create a new model that captures this to make it tidier, neater, and easier to read.
+        public Task<List<TaskModel>> GetTasks() // We might want to create a new model that captures this to make it tidier, neater, and easier to read.
         {
             var tasks = _services.GetTasks();
 
-            if (tasks.Count == 0)
-            {
-                return NotFound();
-            }
             return tasks;
         }
     }

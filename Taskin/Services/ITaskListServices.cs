@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using Taskin.Models;
 
+using TaskModel = Taskin.Models.Task;
+
 namespace Taskin.Services
 {
     public interface ITaskListServices
     {
-        Task AddTask(Task tasks);
-        Dictionary<string, Task> GetTasks();
+        System.Threading.Tasks.Task<TaskModel> AddTask(Task tasks);
+        System.Threading.Tasks.Task<List<TaskModel>> GetTasks();
     }
 }
