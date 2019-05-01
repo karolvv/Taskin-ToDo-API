@@ -23,7 +23,6 @@ namespace Taskin.Controllers
     public class TaskListController : ControllerBase
     {
         private readonly ITaskListServices _services;
-        private readonly DynamoDBContext _context;
 
         public TaskListController(ITaskListServices services)
         {
