@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Taskin.Models;
+using Taskin.Services;
 
 using Amazon;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.Runtime;
+using Microsoft.AspNetCore.Mvc;
+using TaskModel = Taskin.Models.Task;
 
 namespace Taskin.Services 
 {
@@ -21,7 +26,7 @@ namespace Taskin.Services
 
         public async Task<TaskModel> AddTask(TaskModel task)
         {
-            await _context.SaveAsync(task);
+            await _context.SaveAsync<TaskModel>(task);
             return task;
         }
 
@@ -31,9 +36,9 @@ namespace Taskin.Services
             return await _context.ScanAsync<TaskModel>(conditions).GetRemainingAsync();
         }
 
-        private string generateID(string name)
+        private string generateID()
         {
-            return Guid.NewGuid().ToString(name);
+            return Guid.NewGuid().ToString("N");
         }
     }
 }
