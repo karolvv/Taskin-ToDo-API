@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Taskin.Services;
 
 using Amazon;
 using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using Amazon.Runtime;
-using Microsoft.AspNetCore.Mvc;
 using TaskModel = Taskin.Models.Task;
 
 namespace Taskin.Services
@@ -28,6 +23,16 @@ namespace Taskin.Services
         {
             await _context.SaveAsync<TaskModel>(task);
             return task;
+        }
+
+        public List<TaskModel> AddTasks(List<TaskModel> tasks)
+        {
+            //await _context.SaveAsync<TaskModel>(tasks);
+            foreach (TaskModel task in tasks)
+            {
+
+            }
+            return tasks;
         }
 
         public async Task<List<TaskModel>> GetTasks()

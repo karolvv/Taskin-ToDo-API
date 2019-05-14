@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  taskin:
-    image: ${DOCKER_REGISTRY-}taskin
-    build:
-      context: .
-      dockerfile: Taskin/Dockerfile
