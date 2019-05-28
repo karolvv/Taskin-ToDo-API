@@ -44,8 +44,9 @@ namespace Taskin.Controllers
             //Task<TaskModel> newTask = _services.AddTask(tasks);
             foreach (TaskModel task in tasks){
                 _services.AddTask(task);
+                
             }
-            return Json(tasks);
+            return tasks;
         }
 
         // GET /api/TaskList/GetTasks
